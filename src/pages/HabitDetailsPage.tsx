@@ -1,14 +1,39 @@
-import { Calendar, ChevronLeft, Clock, Flame, Target } from "lucide-react";
+import {
+  Calendar,
+  ChevronLeft,
+  Clock,
+  Flame,
+  Play,
+  Target,
+} from "lucide-react";
 import bgImg from "@/assets/images/meditate.jpg";
 import { useNavigate } from "react-router-dom";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import dayjs from "dayjs";
 
 export default function HabitDetailsPage() {
   const navigate = useNavigate();
 
+  const completedDates = [
+    "2025-08-13",
+    "2025-09-15",
+    "2025-09-18",
+    "2025-09-20",
+    "2025-09-21",
+    "2025-09-22",
+    "2025-09-24",
+  ];
+
+  const isCompletedDate = (date: dayjs.Dayjs) => {
+    return completedDates.includes(dayjs(date).format("YYYY-MM-DD"));
+  };
+
   return (
-    <div className="relative mx-auto flex h-screen max-w-md flex-col bg-amber-300">
+    <div className="relative mx-auto flex h-screen max-w-md flex-col bg-amber-100">
       <div
-        className="relative min-h-1/4 bg-cover bg-center"
+        className="relative min-h-[30%] rounded-b-xl bg-cover bg-center"
         style={{
           backgroundImage: `url(${bgImg})`,
         }}
@@ -48,13 +73,50 @@ export default function HabitDetailsPage() {
             a day
           </div>
         </div>
-        <div className="flex w-full">
+        <div className="mb-6 flex w-full">
           <div className="flex items-center gap-1.5 font-semibold">
             <Clock className="w-4 stroke-[2.5]" />
             Best streak:
           </div>
-          <p className="ml-auto">642</p>
+          <p className="ml-auto">
+            <strong>642</strong> days
+          </p>
         </div>
+
+        <div className="pb-4">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+              className="!max-h-[300px] !w-full rounded-xl bg-white"
+              sx={{
+                "& .MuiPickersDay-root": {
+                  "&.Mui-disabled.Mui-selected": {
+                    opacity: 1,
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "oklch(55.5% 0.163 48.998)",
+                    "&:hover": {
+                      backgroundColor: "oklch(47.3% 0.137 46.201)",
+                      fontWeight: "bold",
+                    },
+                  },
+                },
+              }}
+              slotProps={{
+                day: (ownerState) => ({
+                  className: isCompletedDate(ownerState.day)
+                    ? "Mui-selected"
+                    : "Mui-disabled",
+                }),
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+      </div>
+
+      <div className="sticky bottom-0 left-0 flex w-full justify-center bg-amber-100 py-4">
+        <button className="flex cursor-pointer items-center gap-2 rounded-full bg-amber-700 px-8 py-4 text-xl font-medium text-white shadow-xl ring-2 ring-amber-800 transition-colors duration-300 hover:bg-amber-800">
+          Start <Play className="w-4" fill="white" />
+        </button>
       </div>
     </div>
   );
