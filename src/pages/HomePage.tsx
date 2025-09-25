@@ -7,7 +7,7 @@ import HabitList from "@/components/HabitList";
 export default function HomePage() {
   return (
     <div className="relative mx-auto flex h-screen max-w-md flex-col bg-amber-300">
-      <div className="flex min-h-1/2 items-center justify-end px-4 text-amber-50">
+      <div className="flex min-h-1/5 items-center justify-end px-4 text-amber-50">
         <div className="text-right text-xl">
           Welcome back, <span className="text-2xl">Mr. Wee</span>
           <p className="mt-2 text-xs">

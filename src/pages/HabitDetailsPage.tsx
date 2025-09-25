@@ -30,6 +30,11 @@ export default function HabitDetailsPage() {
     return completedDates.includes(dayjs(date).format("YYYY-MM-DD"));
   };
 
+  const handleStartActivity = () => {
+    // Navigate to the countdown page or start the activity directly
+    navigate("/countdown");
+  };
+
   return (
     <div className="relative mx-auto flex h-screen max-w-md flex-col bg-amber-100">
       <div
@@ -114,7 +119,10 @@ export default function HabitDetailsPage() {
       </div>
 
       <div className="sticky bottom-0 left-0 flex w-full justify-center bg-amber-100 py-4">
-        <button className="flex cursor-pointer items-center gap-2 rounded-full bg-amber-700 px-8 py-4 text-xl font-medium text-white shadow-xl ring-2 ring-amber-800 transition-colors duration-300 hover:bg-amber-800">
+        <button
+          className="flex cursor-pointer items-center gap-2 rounded-full bg-amber-700 px-8 py-4 text-xl font-medium text-white shadow-xl ring-2 ring-amber-800 transition-colors duration-300 hover:bg-amber-800"
+          onClick={handleStartActivity}
+        >
           Start <Play className="w-4" fill="white" />
         </button>
       </div>
