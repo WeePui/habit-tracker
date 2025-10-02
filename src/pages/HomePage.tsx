@@ -10,7 +10,7 @@ export default function HomePage() {
 
   return (
     <div className="relative mx-auto flex h-screen max-w-md flex-col bg-amber-300">
-      <div className="flex min-h-1/5 items-center justify-end px-4 text-amber-50">
+      <div className="flex min-h-1/5 items-center justify-end px-4 text-amber-700">
         <div className="text-right text-xl">
           Welcome back, <span className="text-2xl">Mr. Wee</span>
           <p className="mt-2 text-xs">
@@ -23,7 +23,7 @@ export default function HomePage() {
         className="relative flex-1 rounded-t-[75px] bg-cover bg-center bg-no-repeat py-5"
         style={{ backgroundImage: `url(${bgImg})` }}
       >
-        <div className="absolute inset-0 rounded-t-[75px] bg-amber-200/70"></div>
+        <div className="absolute inset-0 rounded-t-[75px] bg-amber-200/50"></div>
         <div className="px-8">
           <div className="relative flex items-center rounded-[75px] bg-amber-300/80 px-4 text-amber-50 shadow">
             <div className="flex w-fit items-center">
@@ -33,7 +33,9 @@ export default function HomePage() {
               />
               <span className="text-xl font-semibold text-amber-700">216</span>
             </div>
-            <p className="ml-4">🌚: Dunno what the fuck to say</p>
+            <p className="ml-4 text-amber-700">
+              🌚: Dunno what the fuck to say
+            </p>
           </div>
         </div>
         <HabitList />

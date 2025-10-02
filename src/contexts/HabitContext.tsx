@@ -1,9 +1,9 @@
-import type { Habit } from "@/types/Habit";
+import { Habit } from "@/types/Habit";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface HabitContextType {
   habits: Habit[];
-  newHabit(habit: Habit): void;
+  createHabit(habit: Habit): void;
   updateHabit(habit: Habit): void;
   deleteHabit(id: string): void;
   getHabitById(id: string): Habit | undefined;
@@ -25,13 +25,20 @@ export function HabitProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("habits", JSON.stringify(habits));
   }, [habits]);
 
-  const newHabit = (habit: Habit) => {
+  const createHabit = (habit: Habit) => {
     setHabits((prev) => [...prev, habit]);
   };
 
-  const updateHabit = (habit: Habit) => {
+  const updateHabit = (updatedData: Partial<Habit>) => {
     setHabits((prev) =>
-      prev.map((h) => (h.id === habit.id ? { ...h, ...habit } : h)),
+      prev.map((h) => {
+        if (h.id === updatedData.id) {
+          // Update từng property thay vì spread
+          Object.assign(h, updatedData);
+          return h;
+        }
+        return h;
+      }),
     );
   };
 
@@ -45,7 +52,7 @@ export function HabitProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <HabitContext.Provider
-      value={{ habits, newHabit, updateHabit, deleteHabit, getHabitById }}
+      value={{ habits, createHabit, updateHabit, deleteHabit, getHabitById }}
     >
       {children}
     </HabitContext.Provider>

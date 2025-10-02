@@ -65,7 +65,7 @@ export default function Select({
       tabIndex={0}
       role="combobox"
     >
-      <button onClick={() => setIsOpen(!isOpen)} id={id}>
+      <button onClick={() => setIsOpen(!isOpen)} id={id} type="button">
         {renderLabel?.(value) ||
           currentLabel ||
           renderCustomLabel?.(value) ||

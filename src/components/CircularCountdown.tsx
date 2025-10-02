@@ -102,6 +102,7 @@ export default function CircularCountdown({
   const reset = () => {
     setIsRunning(false);
     setRemainingTime(duration);
+    setBaseDuration(duration);
     totalElapsedRef.current = 0;
     startTimeRef.current = null;
   };

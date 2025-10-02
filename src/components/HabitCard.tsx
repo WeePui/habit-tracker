@@ -13,7 +13,7 @@ export default function HabitCard({ habit }: { habit: Habit }) {
       <div
         className="relative h-30 rounded-t-2xl bg-cover bg-center"
         style={{
-          backgroundImage: `url(${habit.bgImg})`,
+          backgroundImage: `url(${habit.imgCover})`,
         }}
       >
         <div className="absolute inset-0 h-full w-full bg-amber-300/20"></div>
@@ -24,9 +24,9 @@ export default function HabitCard({ habit }: { habit: Habit }) {
       <div className="flex justify-between bg-amber-200 px-4 py-2 text-amber-700">
         <div>
           <h2 className="text-lg leading-tight font-semibold">{habit.name}</h2>
-          <p className="mt-1 text-xs opacity-75">Streak: {habit.streak} days</p>
+          <p className="mt-1 text-sm opacity-75">Streak: {habit.streak} days</p>
         </div>
-        <div className="self-end text-xs">
+        <div className="self-end text-sm">
           {habit.isDone ? (
             <p className="flex items-center justify-end gap-1">
               <ThumbsUp className="w-3 stroke-3 text-green-700" />

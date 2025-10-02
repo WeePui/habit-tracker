@@ -10,21 +10,21 @@ const habits = [
     name: "Read books",
     streak: 37,
     isDone: true,
-    bgImg: bookBg,
+    imgCover: bookBg,
   },
   {
     id: "2",
     name: "Exercise",
     streak: 5,
     isDone: false,
-    bgImg: exercise,
+    imgCover: exercise,
   },
   {
     id: "3",
     name: "Meditate",
     streak: 12,
     isDone: false,
-    bgImg: meditate,
+    imgCover: meditate,
   },
 ] as Habit[];
 

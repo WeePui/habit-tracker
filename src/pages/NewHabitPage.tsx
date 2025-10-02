@@ -18,8 +18,13 @@ import {
   TIMES_PER_DAY_OPTIONS,
   WEEKDAYS,
 } from "@/constants/habitOptions";
+import { useNavigate } from "react-router-dom";
+import { useHabit } from "@/contexts/HabitContext";
+import { Habit } from "@/types/Habit";
 
 export default function NewHabitPage() {
+  const { createHabit } = useHabit();
+
   const [imgCover, setImgCover] = useState<File | string | null>(defaultImg);
   const [habitName, setHabitName] = useState("");
   const [extended, setExtended] = useState(false);
@@ -33,6 +38,8 @@ export default function NewHabitPage() {
   const [timesPerDay, setTimesPerDay] = useState(1);
   const [durationPerSession, setDurationPerSession] = useState(5);
   const [reminderTime, setReminderTime] = useState("02:08 PM");
+
+  const navigate = useNavigate();
 
   const imgInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,28 +56,26 @@ export default function NewHabitPage() {
     e.preventDefault();
 
     if (!habitName.trim()) {
+      alert("Please enter a habit name.");
       return;
     }
-
-    const data = {
-      name: habitName,
-      image: imgCover,
-      frequency: extended ? frequency : "daily",
-      selectedWeekDays: extended
-        ? frequency === "weekly"
-          ? selectedWeekDays
-          : []
-        : [],
-      selectedMonthDays: extended
-        ? frequency === "monthly"
-          ? selectedMonthDays
-          : []
-        : [],
-      timesPerDay: extended ? timesPerDay : 1,
-      durationPerSession: durationPerSession,
+    if (!imgCover) {
+      alert("Please select a cover image.");
+      return;
+    }
+    const habit = new Habit(
+      habitName,
+      typeof imgCover === "string" ? imgCover : URL.createObjectURL(imgCover),
+      timesPerDay,
+      durationPerSession,
+      extended ? frequency.toLowerCase() : "daily",
+      frequency === "weekly" ? selectedWeekDays : [],
+      frequency === "monthly" ? selectedMonthDays : [],
       reminderTime,
-    };
-    console.log(data);
+    );
+
+    createHabit(habit);
+    navigate("/habits/" + habit.id);
   };
 
   return (
@@ -154,6 +159,7 @@ export default function NewHabitPage() {
           <button
             className="absolute top-0 right-0 flex -translate-y-1/2 items-center gap-1 rounded-full bg-amber-700 px-2 text-left text-xs font-semibold text-white"
             onClick={() => setExtended(!extended)}
+            type="button"
           >
             {extended ? "Less" : "More"}{" "}
             <ChevronDown
@@ -197,6 +203,7 @@ export default function NewHabitPage() {
                         return (
                           <button
                             key={index}
+                            type="button"
                             className="flex-1 rounded-full border-2 border-amber-700 bg-white p-1 text-center text-sm text-amber-800 transition-colors duration-300 hover:bg-amber-800 hover:text-white active:bg-amber-900 active:text-white"
                             style={{
                               backgroundColor: selectedWeekDays.includes(index)
@@ -229,6 +236,7 @@ export default function NewHabitPage() {
                         return (
                           <button
                             key={index}
+                            type="button"
                             className="flex-1 rounded-full border-2 border-amber-700 bg-white p-1 text-center text-sm font-semibold text-amber-800 transition-colors duration-300 hover:bg-amber-800 hover:text-white active:bg-amber-900 active:text-white"
                             style={{
                               backgroundColor: selectedMonthDays.includes(index)
@@ -315,12 +323,23 @@ export default function NewHabitPage() {
           </AnimatePresence>
         </div>
 
-        <button
-          className="mt-6 w-fit self-center rounded-full bg-amber-700 px-8 py-2 text-lg font-semibold text-white shadow-md transition-colors duration-300 hover:bg-amber-800"
-          type="submit"
-        >
-          Create Habit
-        </button>
+        <div className="relative mt-6 text-center">
+          <button
+            className="w-fit rounded-full bg-amber-700 px-8 py-2 text-lg font-semibold text-white shadow-md transition-colors duration-300 hover:bg-amber-800"
+            type="submit"
+          >
+            Create Habit
+          </button>
+          <button
+            type="button"
+            className="absolute ml-4 h-full text-sm text-amber-700 transition-colors hover:text-amber-600"
+            onClick={() => navigate(-1)}
+          >
+            <span className="border-b-2 pb-0.25 transition-all duration-50 hover:border-b-0">
+              Go back
+            </span>
+          </button>
+        </div>
       </form>
     </div>
   );
