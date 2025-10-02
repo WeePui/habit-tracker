@@ -9,14 +9,18 @@
   font-family: "Quicksand", sans-serif;
 }
 
-.bordered-element {
-  border: 15px solid transparent; /* Essential: Set a solid, transparent border */
-  padding: 20px; /* Add padding for content inside the border */
-  border-image: url("vine-frame.jpg") 30 round; /* Adjust values as needed */
-  /* Explanation of border-image properties:
-     - url('path/to/your/border-image.png'): Specifies the image source.
-     - 30: Defines the slice amount (e.g., 30px from each edge for slicing).
-     - round: Specifies how the image edges should be repeated or stretched. Other options include 'stretch' and 'repeat'.
-  */
-  border-radius: 100px;
+input,
+select,
+textarea,
+button:focus {
+  outline: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For IE and Edge */
 }

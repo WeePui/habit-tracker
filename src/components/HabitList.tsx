@@ -6,21 +6,21 @@ import type { Habit } from "@/types/Habit";
 
 const habits = [
   {
-    id: 1,
+    id: "1",
     name: "Read books",
     streak: 37,
     isDone: true,
     bgImg: bookBg,
   },
   {
-    id: 2,
+    id: "2",
     name: "Exercise",
     streak: 5,
     isDone: false,
     bgImg: exercise,
   },
   {
-    id: 3,
+    id: "3",
     name: "Meditate",
     streak: 12,
     isDone: false,

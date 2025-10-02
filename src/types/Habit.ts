@@ -1,5 +1,5 @@
 export interface Habit {
-  id: number;
+  id: string;
   name: string;
   streak: number;
   bgImg: string;

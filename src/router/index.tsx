@@ -1,6 +1,7 @@
 import CountdownPage from "@/pages/CountdownPage";
 import HabitDetailsPage from "@/pages/HabitDetailsPage";
 import HomePage from "@/pages/HomePage";
+import NewHabitPage from "@/pages/NewHabitPage";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/habits/new", element: <NewHabitPage /> },
   {
     path: "/countdown",
     element: <CountdownPage />,

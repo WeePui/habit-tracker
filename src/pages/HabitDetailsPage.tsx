@@ -2,6 +2,7 @@ import {
   Calendar,
   ChevronLeft,
   Clock,
+  Edit3Icon,
   Flame,
   Play,
   Target,
@@ -31,30 +32,37 @@ export default function HabitDetailsPage() {
   };
 
   const handleStartActivity = () => {
-    // Navigate to the countdown page or start the activity directly
     navigate("/countdown");
   };
 
   return (
-    <div className="relative mx-auto flex h-screen max-w-md flex-col bg-amber-100">
+    <div className="relative flex h-screen flex-col bg-amber-200/70">
       <div
-        className="relative min-h-[30%] rounded-b-xl bg-cover bg-center"
+        className="relative min-h-[30%] rounded-b-xl bg-cover bg-center shadow"
         style={{
           backgroundImage: `url(${bgImg})`,
         }}
       >
         <button
-          className="absolute top-4 left-4 flex items-center gap-0.5 rounded-full bg-white px-2 text-xs font-semibold text-amber-700 shadow-md transition-colors duration-300 hover:bg-gray-200/60"
+          className="absolute top-4 left-4 flex items-center gap-0.5 rounded-full bg-white px-2 py-1 text-xs font-semibold text-amber-700 shadow-md transition-colors duration-300 hover:bg-gray-200/60"
           onClick={() => navigate("/")}
         >
           <ChevronLeft className="w-3 stroke-3" /> Go back
         </button>
-        <button className="absolute bottom-0 left-4 flex translate-y-1/2 items-center gap-0.5 rounded-full bg-amber-700 px-4 py-2 text-xl font-semibold text-white shadow-md transition-colors duration-300 hover:bg-gray-200/60">
-          Meditate <Flame className="ml-4 w-4" />{" "}
-          <span className="text-sm">216</span>
+        <div className="absolute top-4 right-4 flex items-center gap-1 rounded-full bg-amber-700 px-2 py-1 text-xs font-semibold text-white shadow-md transition-colors duration-300 hover:bg-gray-200/60">
+          <Flame className="w-3 stroke-3" />
+          <span>216</span>
+        </div>
+
+        <div className="absolute bottom-0 left-4 flex translate-y-1/2 items-center gap-0.5 rounded-full bg-amber-700 px-4 py-2 text-xl font-semibold text-white shadow-md transition-colors duration-300 hover:bg-gray-200/60">
+          Meditate
+        </div>
+
+        <button className="absolute right-4 bottom-0 flex translate-y-1/2 items-center gap-2 rounded-full bg-white px-2 text-xs font-semibold text-amber-700 transition-colors duration-300 hover:bg-gray-200/60">
+          <Edit3Icon className="w-2.5 stroke-3" /> Edit
         </button>
       </div>
-      <div className="flex w-full flex-1 flex-col gap-2 bg-amber-100 px-6 pt-12 text-amber-800">
+      <div className="flex w-full flex-1 flex-col gap-2 px-6 pt-12 text-amber-800">
         <div className="flex w-full">
           <div className="flex items-center gap-1.5 font-semibold">
             <Calendar className="w-4 stroke-[2.5]" />
@@ -68,7 +76,7 @@ export default function HabitDetailsPage() {
             Goal:
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <select className="rounded-full bg-amber-700 p-1 text-white">
+            <select className="rounded-full bg-amber-700 p-1 text-white transition-colors duration-300 hover:bg-amber-800">
               <option>5 minutes</option>
               <option>15 minutes</option>
               <option>30 minutes</option>
@@ -118,7 +126,7 @@ export default function HabitDetailsPage() {
         </div>
       </div>
 
-      <div className="sticky bottom-0 left-0 flex w-full justify-center bg-amber-100 py-4">
+      <div className="sticky bottom-0 left-0 flex w-full justify-center bg-amber-200/70 py-4 backdrop-blur-3xl">
         <button
           className="flex cursor-pointer items-center gap-2 rounded-full bg-amber-700 px-8 py-4 text-xl font-medium text-white shadow-xl ring-2 ring-amber-800 transition-colors duration-300 hover:bg-amber-800"
           onClick={handleStartActivity}
