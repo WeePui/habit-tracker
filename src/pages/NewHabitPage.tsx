@@ -1,3 +1,16 @@
+import defaultImg from "@/assets/images/default-habit-cover.jpg";
+import Select from "@/components/ui/Select";
+import TimePicker from "@/components/ui/TimePicker";
+import {
+  DURATION_OPTIONS,
+  FREQUENCY_OPTIONS,
+  TIMES_PER_DAY_OPTIONS,
+  WEEKDAYS,
+} from "@/constants/habitOptions";
+import { useHabit } from "@/contexts/HabitContext";
+import { formatTime } from "@/helpers/formatTime";
+import { Habit } from "@/types/Habit";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   AlarmCheck,
   Calendar,
@@ -7,20 +20,7 @@ import {
   Target,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
-import defaultImg from "@/assets/images/default-habit-cover.jpg";
-import { AnimatePresence, motion } from "framer-motion";
-import Select from "@/components/ui/Select";
-import { formatTime } from "@/helpers/formatTime";
-import TimePicker from "@/components/ui/TimePicker";
-import {
-  DURATION_OPTIONS,
-  FREQUENCY_OPTIONS,
-  TIMES_PER_DAY_OPTIONS,
-  WEEKDAYS,
-} from "@/constants/habitOptions";
 import { useNavigate } from "react-router-dom";
-import { useHabit } from "@/contexts/HabitContext";
-import { Habit } from "@/types/Habit";
 
 export default function NewHabitPage() {
   const { createHabit } = useHabit();
@@ -28,7 +28,7 @@ export default function NewHabitPage() {
   const [imgCover, setImgCover] = useState<File | string | null>(defaultImg);
   const [habitName, setHabitName] = useState("");
   const [extended, setExtended] = useState(false);
-  const [frequency, setFrequency] = useState("Daily");
+  const [frequency, setFrequency] = useState("daily");
   const [selectedWeekDays, setSelectedWeekDays] = useState<number[]>([
     0, 1, 2, 3, 4,
   ]);
@@ -63,9 +63,12 @@ export default function NewHabitPage() {
       alert("Please select a cover image.");
       return;
     }
+
     const habit = new Habit(
       habitName,
-      typeof imgCover === "string" ? imgCover : URL.createObjectURL(imgCover),
+      typeof imgCover === "string"
+        ? (imgCover as string)
+        : URL.createObjectURL(imgCover),
       timesPerDay,
       durationPerSession,
       extended ? frequency.toLowerCase() : "daily",
@@ -110,7 +113,7 @@ export default function NewHabitPage() {
           Change image
         </button>
         <textarea
-          className="no-scrollbar absolute bottom-0 left-4 flex h-auto max-w-1/2 translate-y-1/2 resize-none items-center gap-0.5 rounded-4xl bg-amber-700 px-4 py-2 text-xl font-semibold text-white shadow-md transition-colors duration-300 hover:bg-amber-800/60"
+          className="no-scrollbar absolute bottom-0 left-4 flex h-auto max-w-1/2 translate-y-1/2 resize-none items-center gap-0.5 rounded-4xl bg-amber-700 px-4 py-2 text-xl font-semibold text-white shadow-md transition-colors duration-300 hover:bg-amber-800/60 hover:text-amber-700/80"
           placeholder="Name your habit"
           onChange={(e) => {
             setHabitName(e.target.value);
@@ -148,7 +151,7 @@ export default function NewHabitPage() {
                 value={durationPerSession}
                 options={DURATION_OPTIONS}
                 onChange={(value) => setDurationPerSession(value)}
-                customableValue
+                customizableValue
                 renderCustomLabel={(value) => formatTime(value)}
               />{" "}
               a day
@@ -281,7 +284,7 @@ export default function NewHabitPage() {
                         options={TIMES_PER_DAY_OPTIONS}
                         value={timesPerDay}
                         onChange={(value) => setTimesPerDay(value)}
-                        customableValue
+                        customizableValue
                       />{" "}
                       a day
                     </div>
@@ -292,7 +295,7 @@ export default function NewHabitPage() {
                       value={durationPerSession}
                       options={DURATION_OPTIONS}
                       onChange={(value) => setDurationPerSession(value)}
-                      customableValue
+                      customizableValue
                       renderCustomLabel={(value) => formatTime(value)}
                     />{" "}
                     each time

@@ -17,37 +17,43 @@ export function HabitProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const storedHabits = localStorage.getItem("habits");
     if (storedHabits) {
-      setHabits(JSON.parse(storedHabits));
+      setHabits(() => {
+        const parsed = JSON.parse(storedHabits);
+        return parsed.map((h: unknown) => Habit.fromJSON(h));
+      });
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("habits", JSON.stringify(habits));
-  }, [habits]);
-
   const createHabit = (habit: Habit) => {
-    setHabits((prev) => [...prev, habit]);
+    setHabits((prev) => {
+      const newHabits = [...prev, habit];
+      localStorage.setItem("habits", JSON.stringify(newHabits));
+      return newHabits;
+    });
   };
 
   const updateHabit = (updatedData: Partial<Habit>) => {
-    setHabits((prev) =>
-      prev.map((h) => {
-        if (h.id === updatedData.id) {
-          // Update từng property thay vì spread
-          Object.assign(h, updatedData);
-          return h;
-        }
-        return h;
-      }),
-    );
+    console.log(updatedData);
+
+    setHabits((prev) => {
+      const newHabits = prev.map((h) =>
+        h.id === updatedData.id ? ({ ...h, ...updatedData } as Habit) : h,
+      );
+      localStorage.setItem("habits", JSON.stringify(newHabits));
+      return newHabits;
+    });
   };
 
   const deleteHabit = (id: string) => {
-    setHabits((prev) => prev.filter((h) => h.id !== id));
+    setHabits((prev) => {
+      const newHabits = prev.filter((h) => h.id !== id);
+      localStorage.setItem("habits", JSON.stringify(newHabits));
+      return newHabits;
+    });
   };
 
   const getHabitById = (id: string) => {
-    return habits.find((h) => h.id === id);
+    return Habit.fromJSON(habits.find((h) => h.id === id));
   };
 
   return (

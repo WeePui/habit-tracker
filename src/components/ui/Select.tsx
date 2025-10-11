@@ -1,7 +1,7 @@
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { useMemo, useState, type RefObject } from "react";
+import { type RefObject, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -16,7 +16,7 @@ interface SelectProps {
   onChange?: (value: any) => void;
   value?: any;
   className?: string;
-  customableValue?: boolean;
+  customizableValue?: boolean;
   renderLabel?: (value: any) => React.ReactNode;
   renderCustomLabel?: (value: any) => React.ReactNode;
   showExpandIcon?: boolean;
@@ -29,7 +29,7 @@ export default function Select({
   onChange,
   value,
   className,
-  customableValue,
+  customizableValue,
   renderLabel,
   renderCustomLabel,
   showExpandIcon = true,
@@ -101,6 +101,7 @@ export default function Select({
                 onClick={() => {
                   onChange?.(option.value);
                   setCustomValue(undefined);
+                  setIsOpen(false);
                 }}
                 className={twMerge(
                   "cursor-pointer px-4 py-2 hover:bg-amber-600",
@@ -111,7 +112,7 @@ export default function Select({
                 {option.label}
               </div>
             ))}
-            {customableValue && (
+            {customizableValue && (
               <div
                 className={twMerge(
                   "border-t border-amber-600",
@@ -122,6 +123,10 @@ export default function Select({
                   type="text"
                   value={customValue || ""}
                   onKeyDown={handleCustomInputKeyDown}
+                  onBlur={() => {
+                    onChange?.(customValue);
+                    setIsOpen(false);
+                  }}
                   onChange={(e) => setCustomValue(e.target.value)}
                   className="w-full border-0 bg-transparent px-4 py-2 text-center text-sm text-white outline-none"
                   placeholder="Enter value"

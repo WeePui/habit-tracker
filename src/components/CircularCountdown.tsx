@@ -5,12 +5,14 @@ interface CircularCountdownProps {
   duration: number; // in seconds
   size?: number;
   strokeWidth?: number;
+  onComplete?: () => void;
 }
 
 export default function CircularCountdown({
   duration,
   size = 300,
   strokeWidth = 50,
+  onComplete,
 }: CircularCountdownProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -22,6 +24,7 @@ export default function CircularCountdown({
   const animationRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const totalElapsedRef = useRef<number>(0);
+  const circleRef = useRef<SVGCircleElement | null>(null);
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -43,10 +46,7 @@ export default function CircularCountdown({
 
   useEffect(() => {
     if (!isRunning) {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
       return;
     }
 
@@ -54,32 +54,34 @@ export default function CircularCountdown({
 
     const tick = (now: number) => {
       if (!startTimeRef.current) return;
+      const elapsed =
+        (now - startTimeRef.current) / 1000 + totalElapsedRef.current;
+      const rem = Math.max(baseDuration - elapsed, 0);
 
-      const currentElapsed = (now - startTimeRef.current) / 1000;
-      const totalElapsed = totalElapsedRef.current + currentElapsed;
-      const rem = Math.max(baseDuration - totalElapsed, 0);
+      const progress = (baseDuration - rem) / baseDuration;
+      if (circleRef.current) {
+        const offset = circumference * (1 - progress);
+        circleRef.current.style.strokeDashoffset = String(offset);
+      }
+
       setRemainingTime(rem);
 
       if (rem > 0) {
         animationRef.current = requestAnimationFrame(tick);
       } else {
-        setIsRunning(false);
-        setRemainingTime(0);
+        onComplete?.();
         totalElapsedRef.current = 0;
-        animationRef.current = null;
         startTimeRef.current = null;
+        setIsRunning(false);
       }
     };
 
     animationRef.current = requestAnimationFrame(tick);
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [baseDuration, isRunning]);
+  }, [isRunning, baseDuration, onComplete, circumference]);
 
   const start = () => {
     setIsRunning(true);
@@ -107,17 +109,12 @@ export default function CircularCountdown({
     startTimeRef.current = null;
   };
 
-  const progress = Math.max(
-    0,
-    Math.min(1, (baseDuration - remainingTime) / baseDuration),
-  );
-  const strokeDashoffset = circumference * (1 - progress);
-
   return (
     <>
       <p className="mb-6 text-center text-3xl font-bold text-amber-700">
         {encouragementMessage}
       </p>
+
       <button
         className="mt-4 flex items-center justify-center gap-2 self-end rounded-lg bg-white px-3 py-1 text-sm font-semibold text-amber-700 shadow-md transition-colors duration-300 hover:bg-gray-100"
         onClick={reset}
@@ -135,15 +132,15 @@ export default function CircularCountdown({
           fill="none"
         />
         <circle
+          ref={circleRef}
           cx="50%"
           cy="50%"
           r={radius}
           stroke="oklch(55.5% 0.163 48.998)"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
+          strokeDashoffset={circumference}
           fill="none"
-          className="text-green-500 transition-all duration-100 ease-linear"
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
         <foreignObject

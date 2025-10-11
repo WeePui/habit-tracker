@@ -1,3 +1,4 @@
+import { generateId } from "@/helpers/generateId.ts";
 import dayjs from "dayjs";
 
 export class Habit {
@@ -12,7 +13,7 @@ export class Habit {
   scheduledMonthlyDays: number[];
   reminderTime?: string;
   startDate: string = dayjs().format("YYYY-MM-DD");
-  doneDays: Set<string> = new Set();
+  doneDays: string[] = [];
   private __streak: number;
   private __progressToday: number = 0;
   private __lastCompletedDate?: string;
@@ -27,7 +28,7 @@ export class Habit {
     scheduledMonthlyDays: number[],
     reminderTime?: string,
   ) {
-    this.id = crypto.randomUUID();
+    this.id = generateId();
     this.name = name;
     this.__streak = 0;
     this.bestStreak = 0;
@@ -40,6 +41,41 @@ export class Habit {
     this.reminderTime = reminderTime;
   }
 
+  get progressToday() {
+    return `${this.__progressToday}/${this.timesPerDay}`;
+  }
+
+  get isDone() {
+    return this.__progressToday === this.timesPerDay;
+  }
+
+  get streak() {
+    return this.__streak;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static fromJSON(obj: any): Habit {
+    const habit = new Habit(
+      obj.name,
+      obj.imgCover,
+      obj.timesPerDay,
+      obj.durationPerSession,
+      obj.frequency,
+      obj.scheduledWeekDays,
+      obj.scheduledMonthlyDays,
+      obj.reminderTime,
+    );
+    habit.id = obj.id;
+    habit.bestStreak = obj.bestStreak;
+    habit.startDate = obj.startDate;
+    habit.doneDays = obj.doneDays;
+    habit.checkStreak();
+    habit.__progressToday = obj.__progressToday;
+    habit.__streak = obj.__streak;
+    habit.__lastCompletedDate = obj.__lastCompletedDate;
+    return habit;
+  }
+
   hasToDoToday(): boolean {
     if (this.frequency === "daily") return true;
 
@@ -48,7 +84,6 @@ export class Habit {
       return this.scheduledWeekDays.includes(today);
     if (this.frequency === "monthly")
       return this.scheduledMonthlyDays.includes(today);
-
     return false;
   }
 
@@ -60,8 +95,11 @@ export class Habit {
       this.__progressToday++;
     }
 
-    if (this.__progressToday === this.timesPerDay) {
-      this.doneDays.add(this.__lastCompletedDate);
+    if (
+      this.__progressToday === this.timesPerDay &&
+      this.doneDays.includes(this.__lastCompletedDate)
+    ) {
+      this.doneDays.push(this.__lastCompletedDate);
       this.__streak++;
       this.bestStreak = Math.max(this.bestStreak, this.__streak);
     }
@@ -70,22 +108,12 @@ export class Habit {
   // Should be called when load the app
   checkStreak() {
     const yesterday = dayjs().subtract(1, "day").format("YYYY-MM-DD");
-    if (!this.doneDays.has(yesterday)) {
+    if (this.doneDays.at(-1) !== yesterday) {
       this.resetStreak();
     }
   }
 
   private resetStreak() {
     this.__streak = 0;
-  }
-
-  get progressToday() {
-    return `${this.__progressToday}/${this.timesPerDay}`;
-  }
-  get isDone() {
-    return this.__progressToday === this.timesPerDay;
-  }
-  get streak() {
-    return this.__streak;
   }
 }

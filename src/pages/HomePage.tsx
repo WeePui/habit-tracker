@@ -1,8 +1,8 @@
-import Lottie from "lottie-react";
 import bgImg from "@/assets/images/background.jpg";
 import fireAnimation from "@/assets/lotties/Fire.json";
-import { Plus, Settings, ShoppingCart } from "lucide-react";
 import HabitList from "@/components/HabitList";
+import Lottie from "lottie-react";
+import { Plus, Settings, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {

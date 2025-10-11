@@ -1,5 +1,6 @@
-import { Calendar, ThumbsUp, XCircle } from "lucide-react";
+import { formatFrequencyLabel, isPlural } from "@/helpers/formatHabitLabel.ts";
 import type { Habit } from "@/types/Habit";
+import { Calendar, ThumbsUp, XCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function HabitCard({ habit }: { habit: Habit }) {
@@ -24,7 +25,10 @@ export default function HabitCard({ habit }: { habit: Habit }) {
       <div className="flex justify-between bg-amber-200 px-4 py-2 text-amber-700">
         <div>
           <h2 className="text-lg leading-tight font-semibold">{habit.name}</h2>
-          <p className="mt-1 text-sm opacity-75">Streak: {habit.streak} days</p>
+          <p className="mt-1 text-sm opacity-75">
+            Streak: {habit.streak} {formatFrequencyLabel(habit.frequency)}
+            {isPlural(habit.streak)}
+          </p>
         </div>
         <div className="self-end text-sm">
           {habit.isDone ? (
@@ -40,7 +44,7 @@ export default function HabitCard({ habit }: { habit: Habit }) {
           )}
           <p className="flex items-center justify-end gap-1 font-extralight">
             <Calendar className="w-3 stroke-3" />
-            3/5 this week
+            {habit.progressToday} this {formatFrequencyLabel(habit.frequency)}
           </p>
         </div>
       </div>
