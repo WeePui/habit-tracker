@@ -1,4 +1,5 @@
 import CountdownPage from "@/pages/CountdownPage";
+import EditHabitPage from "@/pages/EditHabitPage.tsx";
 import HabitDetailsPage from "@/pages/HabitDetailsPage";
 import HomePage from "@/pages/HomePage";
 import NewHabitPage from "@/pages/NewHabitPage";
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     path: "/countdown",
     element: <CountdownPage />,
   },
+  { path: "/habits/:id/edit", element: <EditHabitPage /> },
 ]);
 
 export default router;

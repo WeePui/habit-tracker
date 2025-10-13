@@ -6,7 +6,7 @@ interface HabitContextType {
   createHabit(habit: Habit): void;
   updateHabit(habit: Habit): void;
   deleteHabit(id: string): void;
-  getHabitById(id: string): Habit | undefined;
+  getHabitById(id: string): Habit | null;
 }
 
 const HabitContext = createContext<HabitContextType | null>(null);
@@ -33,8 +33,6 @@ export function HabitProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateHabit = (updatedData: Partial<Habit>) => {
-    console.log(updatedData);
-
     setHabits((prev) => {
       const newHabits = prev.map((h) =>
         h.id === updatedData.id ? ({ ...h, ...updatedData } as Habit) : h,
@@ -53,7 +51,8 @@ export function HabitProvider({ children }: { children: React.ReactNode }) {
   };
 
   const getHabitById = (id: string) => {
-    return Habit.fromJSON(habits.find((h) => h.id === id));
+    const habit = habits.find((h) => h.id === id);
+    return habit ? Habit.fromJSON(habit) : null;
   };
 
   return (

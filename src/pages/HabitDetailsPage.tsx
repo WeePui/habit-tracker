@@ -71,9 +71,12 @@ export default function HabitDetailsPage() {
           {habit.name}
         </div>
 
-        <button className="absolute right-4 bottom-0 flex translate-y-1/2 items-center gap-2 rounded-full bg-white px-2 text-xs font-semibold text-amber-700 transition-colors duration-300 hover:bg-gray-200/60">
+        <Link
+          className="absolute right-4 bottom-0 flex translate-y-1/2 items-center gap-2 rounded-full bg-white px-2 text-xs font-semibold text-amber-700 transition-colors duration-300 hover:bg-gray-200/60"
+          to={`/habits/${habit.id}/edit`}
+        >
           <Edit3Icon className="w-2.5 stroke-3" /> Edit
-        </button>
+        </Link>
       </div>
       <div className="flex w-full flex-1 flex-col gap-2 px-6 pt-12 text-amber-800">
         <div className="flex w-full">

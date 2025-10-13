@@ -1,26 +1,14 @@
 import defaultImg from "@/assets/images/default-habit-cover.jpg";
 import Select from "@/components/ui/Select";
 import TimePicker from "@/components/ui/TimePicker";
-import {
-  DURATION_OPTIONS,
-  FREQUENCY_OPTIONS,
-  TIMES_PER_DAY_OPTIONS,
-  WEEKDAYS,
-} from "@/constants/habitOptions";
-import { useHabit } from "@/contexts/HabitContext";
-import { formatTime } from "@/helpers/formatTime";
-import { Habit } from "@/types/Habit";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  AlarmCheck,
-  Calendar,
-  Camera,
-  ChevronDown,
-  ClockFading,
-  Target,
-} from "lucide-react";
-import { useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {DURATION_OPTIONS, FREQUENCY_OPTIONS, TIMES_PER_DAY_OPTIONS, WEEKDAYS,} from "@/constants/habitOptions";
+import {useHabit} from "@/contexts/HabitContext";
+import {formatTime} from "@/helpers/formatTime";
+import {Habit} from "@/types/Habit";
+import {AnimatePresence, motion} from "framer-motion";
+import {AlarmCheck, Calendar, Camera, ChevronDown, ClockFading, Target,} from "lucide-react";
+import {useMemo, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function NewHabitPage() {
   const { createHabit } = useHabit();
@@ -113,7 +101,7 @@ export default function NewHabitPage() {
           Change image
         </button>
         <textarea
-          className="no-scrollbar absolute bottom-0 left-4 flex h-auto max-w-1/2 translate-y-1/2 resize-none items-center gap-0.5 rounded-4xl bg-amber-700 px-4 py-2 text-xl font-semibold text-white shadow-md transition-colors duration-300 hover:bg-amber-800/60 hover:text-amber-700/80"
+          className="no-scrollbar absolute bottom-0 left-4 flex h-auto max-w-1/2 translate-y-1/2 resize-none items-center gap-0.5 rounded-4xl bg-amber-700 px-4 py-2 text-xl font-semibold text-white shadow-md transition-colors duration-300 hover:bg-gray-200/60 hover:text-amber-700/80"
           placeholder="Name your habit"
           onChange={(e) => {
             setHabitName(e.target.value);
